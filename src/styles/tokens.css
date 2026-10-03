@@ -1,0 +1,43 @@
+/* Aranya Estate — design tokens.
+   Raw values live here; Tailwind exposes them via @theme in globals.css. */
+
+:root {
+  /* palette */
+  --bg: #0e0d0b; /* deep warm charcoal */
+  --surface: #1a1815;
+  --surface-2: #24211d;
+  --ivory: #f3eee6; /* text on dark / light sections */
+  --ivory-2: #e9e2d6;
+  --muted: #a39e94; /* muted text on dark (7.4:1 on --bg) */
+  --muted-ink: #5e594f; /* muted text on ivory (6.1:1) */
+  --gold: #c8a96a; /* accent on dark — sparingly */
+  --gold-deep: #7a5c24; /* accent text on ivory (5.3:1) */
+  --forest: #2f3b2f;
+  --forest-deep: #1c241c;
+
+  /* lines */
+  --line-dark: rgb(243 238 230 / 0.12);
+  --line-light: rgb(14 13 11 / 0.12);
+
+  /* glass */
+  --glass-bg: rgb(255 255 255 / 0.07);
+  --glass-bg-strong: rgb(255 255 255 / 0.1);
+  --glass-border: rgb(255 255 255 / 0.1);
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  --glass-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.55);
+  --glass-fallback: rgb(26 24 21 / 0.92);
+
+  /* motion */
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* type scale (fluid) */
+  --fs-hero: clamp(3.4rem, 10.5vw, 11.5rem);
+  --fs-display: clamp(2.8rem, 7vw, 7.5rem);
+  --fs-h2: clamp(2.2rem, 4.6vw, 4.75rem);
+  --fs-h3: clamp(1.6rem, 2.4vw, 2.4rem);
+
+  /* layout */
+  --gutter: clamp(1.25rem, 3.5vw, 3.5rem);
+  --section-y: clamp(5rem, 12vw, 12rem);
+  --nav-h: 5rem;
+}

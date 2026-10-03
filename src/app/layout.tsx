@@ -1,47 +1,59 @@
-import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Providers from "@/components/layout/Providers";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { DevMenu } from "@/components/layout/DevMenu";
+import { Cursor } from "@/components/ui/Cursor";
+import { PageTransition } from "@/components/motion/PageTransition";
 
-const fraunces = Fraunces({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
-  weight: ["300", "400", "500", "600"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
 const manrope = Manrope({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-manrope",
-  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Alondra Cay — A Private Island Resort",
+  metadataBase: new URL("https://aranya.estate"),
+  title: { default: "Aranya Estate — A forest retreat in the Western Ghats", template: "%s · Aranya Estate" },
   description:
-    "Explore Alondra Cay, a boutique private-island resort. Discover rooms, experiences, and the property before you book.",
+    "Eighteen villas on a 120-acre forest estate in Kerala's Western Ghats. Explore the property, the rooms and the days here before you book.",
+  openGraph: {
+    title: "Aranya Estate",
+    description: "A forest retreat in the Western Ghats. Where time slows down.",
+    type: "website",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#0E0D0B",
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
       <body>
+        <a href="#main" className="skip-link eyebrow">Skip to content</a>
         <div className="grain" aria-hidden="true" />
-        <CustomCursor />
-        <SmoothScroll>
+        <Providers>
+          <Cursor />
           <Navbar />
-          {children}
-          <Footer />
-        </SmoothScroll>
+          <PageTransition>
+            <div id="main">{children}</div>
+            <Footer />
+          </PageTransition>
+          <DevMenu />
+        </Providers>
       </body>
     </html>
   );

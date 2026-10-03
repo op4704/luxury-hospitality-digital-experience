@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { ViewTransition, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ClipReveal, FadeUp } from "@/components/motion/RevealText";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -48,14 +48,18 @@ export function ExperiencesMasonry() {
                 return (
                   <Link key={exp.slug} href={`/experiences/${exp.slug}`} data-cursor="Explore" className="group block">
                     <ClipReveal className={cn("rounded-[18px]", RATIOS[idx])} delay={(idx % 3) * 0.08}>
-                      <Image
-                        src={exp.image.src}
-                        alt={exp.image.alt}
-                        fill
-                        sizes="(max-width:768px) 100vw, 31vw"
-                        quality={75}
-                        className="object-cover transition-transform duration-[1.4s] ease-expo group-hover:scale-[1.05]"
-                      />
+                      <ViewTransition name={`exp-${exp.slug}`} share="morph" default="none">
+                        <div className="absolute inset-0">
+                          <Image
+                            src={exp.image.src}
+                            alt={exp.image.alt}
+                            fill
+                            sizes="(max-width:768px) 100vw, 31vw"
+                           
+                            className="object-cover transition-transform duration-[1.4s] ease-expo group-hover:scale-[1.05]"
+                          />
+                        </div>
+                      </ViewTransition>
                     </ClipReveal>
                     <div className="mt-5 flex items-baseline justify-between gap-4 border-b border-[var(--line-light)] pb-4">
                       <div>

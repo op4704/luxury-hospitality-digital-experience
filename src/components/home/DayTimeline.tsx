@@ -99,7 +99,7 @@ function DayPinned() {
           </div>
 
           <div className="col-span-7 col-start-6 relative">
-            <svg viewBox="0 0 200 104" className="pointer-events-none absolute -top-[16%] left-[5%] w-[90%] overflow-visible" aria-hidden="true">
+            <svg viewBox="0 0 200 104" className="pointer-events-none absolute -top-[16%] left-[5%] z-10 w-[90%] overflow-visible" aria-hidden="true">
               <path d="M10 100 A90 82 0 0 1 190 100" fill="none" stroke="currentColor" strokeOpacity="0.2" strokeWidth="0.4" />
               <motion.path d="M10 100 A90 82 0 0 1 190 100" fill="none" stroke="#C8A96A" strokeWidth="0.6" style={{ pathLength: arc }} />
               <motion.circle r="2.6" fill="#C8A96A" style={{ cx: sunX, cy: sunY }} />
@@ -113,7 +113,7 @@ function DayPinned() {
                   animate={{ opacity: i === active ? 1 : 0, scale: i === active ? 1 : 1.08 }}
                   transition={{ duration: 1.1, ease: EASE }}
                 >
-                  <Image src={m.image.src} alt={i === active ? m.image.alt : ""} fill sizes="55vw" quality={75} className="object-cover" />
+                  <Image src={m.image.src} alt={i === active ? m.image.alt : ""} fill sizes="55vw" className="object-cover" />
                 </motion.div>
               ))}
             </div>
@@ -139,7 +139,7 @@ function DayStacked() {
               <p className="mt-3 leading-relaxed opacity-80 max-w-md">{m.body}</p>
             </FadeUp>
             <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-[18px]">
-              <Image src={m.image.src} alt={m.image.alt} fill sizes="100vw" quality={70} className="object-cover" />
+              <Image src={m.image.src} alt={m.image.alt} fill sizes="100vw" className="object-cover" />
             </div>
           </div>
         </div>

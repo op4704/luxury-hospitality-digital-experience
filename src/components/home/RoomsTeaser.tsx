@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { HorizontalScroller } from "@/components/motion/HorizontalScroller";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ROOMS } from "@/data/rooms";
@@ -28,14 +29,18 @@ export function RoomsTeaser() {
           data-cursor="View"
           className="group relative shrink-0 snap-start overflow-hidden rounded-[22px] w-[82vw] h-[64svh] md:w-[clamp(340px,30vw,560px)] md:h-[58vh]"
         >
-          <Image
-            src={room.hero.src}
-            alt={room.hero.alt}
-            fill
-            sizes="(max-width:768px) 82vw, 30vw"
-            quality={75}
-            className="object-cover transition-transform duration-[1.4s] ease-expo group-hover:scale-[1.06]"
-          />
+          <ViewTransition name={`room-${room.slug}`} share="morph" default="none">
+            <div className="absolute inset-0">
+              <Image
+                src={room.hero.src}
+                alt={room.hero.alt}
+                fill
+                sizes="(max-width:768px) 82vw, 30vw"
+               
+                className="object-cover transition-transform duration-[1.4s] ease-expo group-hover:scale-[1.06]"
+              />
+            </div>
+          </ViewTransition>
           <div className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-transparent" />
           <span className="eyebrow num absolute left-5 top-5 text-ivory/80">{String(i + 1).padStart(2, "0")}</span>
           <div className="glass absolute inset-x-3 bottom-3 rounded-[18px] p-5 transition-transform duration-700 ease-expo group-hover:-translate-y-1">

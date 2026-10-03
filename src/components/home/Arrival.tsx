@@ -36,7 +36,7 @@ function ArrivalPinned() {
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <motion.div className="absolute inset-0 will-change-[clip-path]" style={{ clipPath: clip }}>
           <motion.div className="absolute inset-0" style={{ scale: imgScale }}>
-            <Image src={PHOTOS.poolForest.src} alt={PHOTOS.poolForest.alt} fill sizes="100vw" quality={75} className="object-cover" />
+            <Image src={PHOTOS.poolForest.src} alt={PHOTOS.poolForest.alt} fill sizes="100vw" className="object-cover" />
           </motion.div>
           <motion.div className="absolute inset-0 bg-bg" style={{ opacity: dim }} />
         </motion.div>
@@ -86,7 +86,7 @@ function ArrivalStacked() {
       <div className="container-x">
         <p className="eyebrow text-gold mb-8">01 — Arrival</p>
         <ClipReveal className="aspect-[4/5] rounded-[20px]">
-          <Image src={PHOTOS.poolForest.src} alt={PHOTOS.poolForest.alt} fill sizes="100vw" quality={75} className="object-cover" />
+          <Image src={PHOTOS.poolForest.src} alt={PHOTOS.poolForest.alt} fill sizes="100vw" className="object-cover" />
         </ClipReveal>
         <div className="mt-12 space-y-12">
           {WORDS.map((w) => (

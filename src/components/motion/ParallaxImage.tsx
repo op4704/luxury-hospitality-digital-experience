@@ -36,7 +36,7 @@ export function ParallaxImage({
   return (
     <div ref={ref} className={cn(!positioned && "relative", "overflow-hidden", className)} data-cursor={cursor}>
       <motion.div className="absolute inset-[-14%] will-change-transform" style={{ y }}>
-        <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" quality={75} />
+        <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" />
       </motion.div>
     </div>
   );

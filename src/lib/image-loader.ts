@@ -8,7 +8,9 @@
 export default function imageLoader({ src, width, quality }: { src: string; width: number; quality?: number }) {
   if (src.startsWith("https://images.unsplash.com/")) {
     const base = src.split("?")[0];
-    return `${base}?w=${width}&q=${quality ?? 70}&auto=format&fit=crop`;
+    // large hero renders tolerate stronger compression under the grain overlay
+    const q = quality ?? (width >= 1440 ? 55 : 65);
+    return `${base}?w=${width}&q=${q}&auto=format&fit=crop`;
   }
   return `${src}${src.includes("?") ? "&" : "?"}w=${width}`;
 }

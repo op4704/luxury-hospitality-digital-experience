@@ -37,12 +37,12 @@ export function ChapterRail({ chapters }: { chapters: Chapter[] }) {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 mix-blend-difference md:flex flex-col items-center gap-5 text-ivory">
       <span className="eyebrow num text-[0.62rem]">
-        {String(active + 1).padStart(2, "0")}
+        {String(active).padStart(2, "0")}
       </span>
       <div className="relative h-36 w-px bg-ivory/25">
         <motion.div className="absolute inset-0 origin-top bg-ivory" style={{ scaleY }} />
       </div>
-      <span className="eyebrow num text-[0.62rem] opacity-60">{String(chapters.length).padStart(2, "0")}</span>
+      <span className="eyebrow num text-[0.62rem] opacity-60">{String(chapters.length - 1).padStart(2, "0")}</span>
       <div className="h-24 w-4 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.span

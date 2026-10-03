@@ -22,7 +22,7 @@ export function BeginCTA() {
     <section id="begin" ref={ref} className="relative overflow-hidden bg-bg">
       <div className="relative min-h-[100svh] flex flex-col justify-center">
         <motion.div className="absolute inset-[-12%_0_0_0]" style={{ y: imgY }} aria-hidden="true">
-          <Image src={PHOTOS.lakeDusk.src} alt="" fill sizes="100vw" quality={70} className="object-cover opacity-45" />
+          <Image src={PHOTOS.lakeDusk.src} alt="" fill sizes="100vw" className="object-cover opacity-45" />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-bg via-bg/40 to-bg" />
 

@@ -7,7 +7,10 @@ type Tag = "h1" | "h2" | "h3" | "p" | "span";
 
 /**
  * Splits text into words, each sliding up out of an overflow-hidden mask.
- * `trigger="mount"` plays immediately (hero); default plays when in view.
+ * - trigger="mount": pure CSS keyframes — paints from the server HTML with
+ *   no hydration wait (keeps hero LCP fast).
+ * - trigger="view": Motion whileInView.
+ * Screen readers get the plain sentence via an sr-only copy.
  */
 export function RevealText({
   text,
@@ -24,34 +27,60 @@ export function RevealText({
   stagger?: number;
   trigger?: "view" | "mount";
 }) {
-  const Comp = motion[as];
   const lines = text.split("\n");
   let wi = 0;
-  const anim = trigger === "mount" ? { animate: "show" } : { whileInView: "show", viewport: { once: true, amount: 0.5 } };
 
-  return (
-    <Comp className={className} initial="hidden" {...anim} aria-label={text.replace(/\n/g, " ")}>
-      {lines.map((line, li) => (
-        <span key={li} className="block" aria-hidden="true">
-          {line.split(" ").map((word, i, arr) => {
-            const idx = wi++;
-            return (
-              <span key={i} className="inline-block overflow-hidden align-bottom pb-[0.08em] -mb-[0.08em]">
+  const words = (mount: boolean) =>
+    lines.map((line, li) => (
+      <span key={li} className="block" aria-hidden="true">
+        {line.split(" ").map((word, i, arr) => {
+          const idx = wi++;
+          const content = (
+            <>
+              {word}
+              {i < arr.length - 1 ? "\u00A0" : ""}
+            </>
+          );
+          return (
+            <span key={i} className="inline-block overflow-hidden align-bottom pb-[0.08em] -mb-[0.08em]">
+              {mount ? (
+                <span className="word-rise inline-block" style={{ animationDelay: `${delay + idx * stagger}s` }}>
+                  {content}
+                </span>
+              ) : (
                 <motion.span
-                  className="inline-block will-change-transform"
+                  className="inline-block"
                   variants={{
                     hidden: { y: "105%" },
                     show: { y: "0%", transition: { duration: 1.1, ease: EASE, delay: delay + idx * stagger } },
                   }}
                 >
-                  {word}
-                  {i < arr.length - 1 ? "\u00A0" : ""}
+                  {content}
                 </motion.span>
-              </span>
-            );
-          })}
-        </span>
-      ))}
+              )}
+            </span>
+          );
+        })}
+      </span>
+    ));
+
+  const sr = <span className="sr-only">{text.replace(/\n/g, " ")}</span>;
+
+  if (trigger === "mount") {
+    const Comp = as;
+    return (
+      <Comp className={className}>
+        {sr}
+        {words(true)}
+      </Comp>
+    );
+  }
+
+  const Comp = motion[as];
+  return (
+    <Comp className={className} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.5 }}>
+      {sr}
+      {words(false)}
     </Comp>
   );
 }

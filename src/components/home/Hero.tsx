@@ -30,22 +30,17 @@ export function Hero() {
           animate={{ scale: 1.02 }}
           transition={{ duration: 14, ease: "easeOut" }}
         >
-          <Image src={PHOTOS.villaHills.src} alt={PHOTOS.villaHills.alt} fill priority sizes="100vw" quality={75} className="object-cover" />
+          <Image src={PHOTOS.villaHills.src} alt={PHOTOS.villaHills.alt} fill priority sizes="100vw" className="object-cover" />
         </motion.div>
       </motion.div>
       <div className="scrim-b absolute inset-0" />
       <motion.div className="absolute inset-0 bg-bg" style={{ opacity: veil }} />
 
       <motion.div style={{ y: textY, opacity: fade }} className="relative z-10 flex h-full flex-col justify-end container-x pb-36 md:pb-40">
-        <motion.p
-          className="eyebrow text-ivory/80 mb-6 flex items-center gap-3"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: EASE, delay: 0.3 }}
-        >
+        <p className="fade-in eyebrow text-ivory/80 mb-6 flex items-center gap-3" style={{ animationDelay: "0.3s" }}>
           <span className="inline-block w-8 h-px bg-gold" />
           {ESTATE.place}
-        </motion.p>
+        </p>
         <RevealText
           as="h1"
           trigger="mount"

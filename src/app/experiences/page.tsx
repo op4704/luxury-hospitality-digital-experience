@@ -13,7 +13,7 @@ const IMG = {
   spa: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1600&auto=format&fit=crop",
   yoga: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1600&auto=format&fit=crop",
   cooking: "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1600&auto=format&fit=crop",
-  night: "https://images.unsplash.com/photo-1483197255712-f0d5bfa0aca9?q=80&w=1600&auto=format&fit=crop",
+  night: "https://images.unsplash.com/photo-1722404557005-00b57aeb5126?q=80&w=1600&auto=format&fit=crop",
 };
 
 const EXPERIENCES = [
@@ -83,6 +83,7 @@ export default function ExperiencesPage() {
           alt="Guests enjoying the coastline at Alondra Cay"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-ink/40" />
@@ -154,6 +155,7 @@ export default function ExperiencesPage() {
                       src={exp.img}
                       alt={exp.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, 58vw"
                       className="object-cover"
                     />
                   </ImageReveal>

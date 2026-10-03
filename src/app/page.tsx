@@ -36,6 +36,7 @@ export default function Home() {
             alt="Alondra Cay resort at golden hour"
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-ink/30" />
@@ -102,6 +103,7 @@ export default function Home() {
                 src={IMG.intro}
                 alt="Private terrace overlooking the sea"
                 fill
+                sizes="(max-width: 768px) 100vw, 42vw"
                 className="object-cover"
               />
             </ImageReveal>
@@ -215,6 +217,7 @@ export default function Home() {
                     src={room.img}
                     alt={room.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </ImageReveal>
@@ -268,6 +271,7 @@ export default function Home() {
                     src={exp.img}
                     alt={exp.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </ImageReveal>
@@ -298,6 +302,7 @@ export default function Home() {
             src={IMG.explorer}
             alt="Aerial view of Alondra Cay"
             fill
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-ink/50" />

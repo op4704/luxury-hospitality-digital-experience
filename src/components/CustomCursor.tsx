@@ -1,15 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     const isFinePointer = window.matchMedia("(pointer: fine)").matches;
-    setEnabled(isFinePointer);
     if (!isFinePointer) return;
+    dotRef.current?.style.setProperty("display", "block");
 
     let x = 0;
     let y = 0;
@@ -56,6 +55,5 @@ export default function CustomCursor() {
     };
   }, []);
 
-  if (!enabled) return null;
-  return <div ref={dotRef} className="cursor-dot" />;
+  return <div ref={dotRef} className="cursor-dot" style={{ display: "none" }} />;
 }

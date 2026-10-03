@@ -255,6 +255,7 @@ export default function Booking() {
                     src={selectedRoom.img}
                     alt={selectedRoom.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 42vw"
                     className="object-cover"
                   />
                 </ImageReveal>

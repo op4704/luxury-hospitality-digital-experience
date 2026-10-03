@@ -63,6 +63,7 @@ export default function ConciergePage() {
             alt="Concierge desk at Alondra Cay"
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-ink/30" />
@@ -93,6 +94,7 @@ export default function ConciergePage() {
                 src={IMG.philosophy}
                 alt="Concierge arranging details for a guest"
                 fill
+                sizes="(max-width: 768px) 100vw, 42vw"
                 className="object-cover"
               />
             </ImageReveal>
@@ -190,6 +192,7 @@ export default function ConciergePage() {
                     src={member.img}
                     alt={member.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
                   />
                 </ImageReveal>

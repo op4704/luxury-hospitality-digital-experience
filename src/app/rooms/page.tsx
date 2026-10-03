@@ -10,7 +10,7 @@ const IMG = {
   hero: "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?q=80&w=2400&auto=format&fit=crop",
   cliffside: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1800&auto=format&fit=crop",
   grove: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1800&auto=format&fit=crop",
-  tide: "https://images.unsplash.com/photo-1591079757394-e0e5f1f51a2e?q=80&w=1800&auto=format&fit=crop",
+  tide: "https://images.unsplash.com/photo-1734910619489-c68fede32351?q=80&w=1800&auto=format&fit=crop",
   horizon: "https://images.unsplash.com/photo-1591088398332-8a7791972843?q=80&w=1800&auto=format&fit=crop",
   olive: "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1800&auto=format&fit=crop",
 };
@@ -69,6 +69,7 @@ export default function Rooms() {
             alt="A sunlit suite at Alondra Cay"
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-ink/30" />
@@ -117,6 +118,7 @@ export default function Rooms() {
                     src={room.img}
                     alt={room.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 58vw"
                     className="object-cover"
                   />
                 </ImageReveal>

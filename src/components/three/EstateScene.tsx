@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { ZONES } from "@/data/zones";
 import type { ZoneId } from "@/lib/types";
@@ -19,11 +18,17 @@ function rand(seed: number) {
 export default function EstateScene({
   active,
   night,
-  onSelect,
+  hotspotEls,
 }: {
   active: ZoneId | null;
   night: boolean;
-  onSelect: (id: ZoneId) => void;
+  /** Plain DOM nodes (rendered by the parent, NOT inside the Canvas) that this
+   *  scene positions every frame by projecting 3D -> screen space. Using real
+   *  sibling elements instead of drei's <Html> portal avoids a React 19 +
+   *  R3F race: Html's portal cleanup and Next's route-unmount can both try to
+   *  remove the same DOM node, throwing "Failed to execute 'removeChild'".
+   *  A plain mutable map (not a React ref) so it's never read during render. */
+  hotspotEls: Partial<Record<ZoneId, HTMLButtonElement | null>>;
 }) {
   const t = night ? NIGHT : DAY;
   return (
@@ -52,9 +57,7 @@ export default function EstateScene({
       <Terrain night={night} />
       <Trees night={night} />
       <Buildings night={night} />
-      {ZONES.map((z) => (
-        <Hotspot key={z.id} id={z.id} index={z.index} label={z.name} position={z.position} active={active === z.id} onSelect={onSelect} />
-      ))}
+      <HotspotProjector hotspotEls={hotspotEls} />
       <CameraRig active={active} />
     </Canvas>
   );
@@ -201,36 +204,42 @@ function Buildings({ night }: { night: boolean }) {
   );
 }
 
-function Hotspot({
-  id,
-  index,
-  label,
-  position,
-  active,
-  onSelect,
-}: {
-  id: ZoneId;
-  index: string;
-  label: string;
-  position: [number, number, number];
-  active: boolean;
-  onSelect: (id: ZoneId) => void;
-}) {
-  return (
-    <Html position={[position[0], heightAt(position[0], position[2]) + 1.3, position[2]]} center zIndexRange={[20, 0]}>
-      <button
-        onClick={() => onSelect(id)}
-        aria-pressed={active}
-        aria-label={`${label} — fly to this area`}
-        className={`group flex items-center gap-2 whitespace-nowrap rounded-full px-1.5 py-1.5 pr-3 text-[0.62rem] uppercase tracking-[0.16em] transition-all duration-500 ${
-          active ? "bg-ivory text-bg" : "glass-ink text-ivory hover:bg-white/20"
-        }`}
-      >
-        <span className={`grid h-6 w-6 place-items-center rounded-full text-[0.58rem] ${active ? "bg-bg text-ivory" : "bg-gold text-bg"}`}>{index}</span>
-        <span className="hidden sm:inline">{label}</span>
-      </button>
-    </Html>
-  );
+/**
+ * Projects each zone's 3D anchor to 2D screen space every frame and writes it
+ * directly onto the sibling DOM buttons' style (imperative, no React state —
+ * same technique as the custom cursor). No portal is created inside the
+ * Canvas, so there is nothing for Next's route-unmount to race against.
+ */
+function HotspotProjector({ hotspotEls }: { hotspotEls: Partial<Record<ZoneId, HTMLButtonElement | null>> }) {
+  const { camera, size } = useThree();
+  const v = useRef(new THREE.Vector3());
+  // Snapshot the externally-owned DOM-node map into a ref outside render, so
+  // the r3f render loop (which runs forever, independent of React's render
+  // cycle) always reads the latest map without re-subscribing useFrame.
+  const elsRef = useRef(hotspotEls);
+  useEffect(() => {
+    elsRef.current = hotspotEls;
+  });
+
+  useFrame(() => {
+    const els = elsRef.current;
+    for (const z of ZONES) {
+      const el = els[z.id];
+      if (!el) continue;
+      v.current.set(z.position[0], heightAt(z.position[0], z.position[2]) + 1.3, z.position[2]);
+      v.current.project(camera);
+      const behind = v.current.z > 1;
+      if (behind) {
+        el.style.display = "none";
+        continue;
+      }
+      const x = (v.current.x * 0.5 + 0.5) * size.width;
+      const y = (-v.current.y * 0.5 + 0.5) * size.height;
+      el.style.display = "";
+      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    }
+  });
+  return null;
 }
 
 /** Smoothly flies the camera to the active zone, otherwise slowly orbits the estate. */

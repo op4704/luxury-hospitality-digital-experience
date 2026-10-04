@@ -3,10 +3,11 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ZONES } from "@/data/zones";
 import { PHOTOS } from "@/data/photos";
+import { SceneErrorBoundary } from "@/components/three/SceneErrorBoundary";
 import type { ZoneId } from "@/lib/types";
 import { useMediaQuery } from "@/lib/hooks";
 import { EASE, cn } from "@/lib/utils";
@@ -70,11 +71,41 @@ export function Explorer() {
   const effective = mode ?? (can3D === null ? null : can3D ? "3d" : "map");
   const zone = ZONES.find((z) => z.id === active);
 
+  // Real sibling DOM nodes for the 3D hotspots (see EstateScene's
+  // HotspotProjector) — a plain mutable object (NOT a React ref), filled by
+  // callback refs in the JSX below, so nothing ref-related is read at render time.
+  const hotspotEls = useMemo(() => ({}) as Partial<Record<ZoneId, HTMLButtonElement | null>>, []);
+
   return (
     <section className="relative h-[100svh] min-h-[620px] overflow-hidden bg-bg" aria-label="Property explorer">
-      {effective === "3d" && <EstateScene active={active} night={night} onSelect={setActive} />}
+      {effective === "3d" && (
+        <SceneErrorBoundary fallback={<MapFallback active={active} onSelect={setActive} night={night} />}>
+          <EstateScene active={active} night={night} hotspotEls={hotspotEls} />
+        </SceneErrorBoundary>
+      )}
       {effective === "map" && <MapFallback active={active} onSelect={setActive} night={night} />}
       {effective === null && <Loader />}
+
+      {effective === "3d" &&
+        ZONES.map((z) => (
+          <button
+            key={z.id}
+            ref={(el) => {
+              hotspotEls[z.id] = el;
+            }}
+            onClick={() => setActive(z.id)}
+            aria-pressed={active === z.id}
+            aria-label={`${z.name} — fly to this area`}
+            style={{ position: "absolute", left: 0, top: 0, willChange: "transform" }}
+            className={cn(
+              "group z-[22] flex items-center gap-2 whitespace-nowrap rounded-full px-1.5 py-1.5 pr-3 text-[0.62rem] uppercase tracking-[0.16em] transition-colors duration-500",
+              active === z.id ? "bg-ivory text-bg" : "glass-ink text-ivory hover:bg-white/20"
+            )}
+          >
+            <span className={cn("grid h-6 w-6 place-items-center rounded-full text-[0.58rem]", active === z.id ? "bg-bg text-ivory" : "bg-gold text-bg")}>{z.index}</span>
+            <span className="hidden sm:inline">{z.name}</span>
+          </button>
+        ))}
 
       {/* top-left title */}
       <div className="pointer-events-none absolute left-0 top-0 z-[25] container-x pt-28 md:pt-32">
